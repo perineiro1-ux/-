@@ -1,0 +1,453 @@
+
+<!DOCTYPE html>
+<html lang="ky">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Баястан & Айгул | Тойго чакыруу</title>
+
+<style>
+:root {
+  --cream: #fbf7ef;
+  --gold: #b69a5b;
+  --dark-gold: #806735;
+  --text: #493e30;
+}
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--cream);
+  color: var(--text);
+  font-family: Georgia, "Times New Roman", serif;
+  text-align: center;
+}
+
+button, a { font: inherit; }
+
+main {
+  min-height: 100vh;
+  padding: 20px 12px;
+  background:
+    radial-gradient(ellipse at top, #fffdf8, transparent 65%),
+    var(--cream);
+}
+
+.frame {
+  max-width: 700px;
+  margin: 15px auto;
+  padding: 40px 22px;
+  border: 1px solid var(--gold);
+  outline: 1px solid #d9c99f;
+  outline-offset: 5px;
+  background: rgba(255,253,248,.88);
+}
+
+.eyebrow {
+  color: var(--dark-gold);
+  letter-spacing: 3px;
+  font-size: 12px;
+  text-transform: uppercase;
+}
+
+h1 {
+  font-size: clamp(42px, 10vw, 76px);
+  line-height: 1.1;
+  font-weight: normal;
+  font-style: italic;
+  color: var(--dark-gold);
+  margin: 24px 0;
+}
+
+h2 {
+  font-size: clamp(25px, 6vw, 38px);
+  color: var(--dark-gold);
+  font-weight: normal;
+  font-style: italic;
+}
+
+.amp {
+  display: block;
+  font-size: 30px;
+  margin: 8px;
+}
+
+.divider {
+  color: var(--gold);
+  margin: 25px auto;
+  max-width: 260px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.divider::before, .divider::after {
+  content: "";
+  height: 1px;
+  background: var(--gold);
+  flex: 1;
+}
+
+p {
+  font-size: 17px;
+  line-height: 1.8;
+}
+
+.date {
+  color: var(--dark-gold);
+  letter-spacing: 2px;
+  font-size: 23px;
+}
+
+button, .map-link {
+  display: inline-block;
+  padding: 12px 22px;
+  border: 1px solid var(--gold);
+  background: var(--dark-gold);
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+  margin: 8px;
+}
+
+.map-link {
+  background: transparent;
+  color: var(--dark-gold);
+}
+
+.photo {
+  display: block;
+  width: 100%;
+  max-height: 520px;
+  object-fit: cover;
+  margin: 25px auto;
+  border: 1px solid var(--gold);
+}
+
+#photoMessage {
+  padding: 20px;
+  border: 1px dashed var(--gold);
+  color: #817866;
+}
+
+.countdown {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  max-width: 440px;
+  margin: 25px auto;
+}
+
+.countdown div {
+  border: 1px solid #d5c39a;
+  padding: 12px 4px;
+  background: #fffdf8;
+}
+
+.countdown strong {
+  display: block;
+  font-size: clamp(20px, 5vw, 32px);
+  color: var(--dark-gold);
+  font-weight: normal;
+}
+
+.countdown span {
+  font-size: 12px;
+  color: #817866;
+}
+
+footer {
+  margin-top: 35px;
+  color: var(--dark-gold);
+}
+
+/* Конверттин биринчи экраны */
+.envelope-screen {
+  position: fixed;
+  z-index: 10;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 22px;
+  background: #fbf7ef;
+  transition: opacity .8s, visibility .8s;
+}
+
+.envelope-screen.open {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.envelope-wrap {
+  width: min(420px, 100%);
+}
+
+.envelope {
+  width: 100%;
+  aspect-ratio: 1.35;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--gold);
+  background: #fffdf8;
+  box-shadow: 0 15px 40px #80673522;
+  color: var(--dark-gold);
+  cursor: pointer;
+}
+
+.envelope::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #fffaf0;
+  clip-path: polygon(0 0, 100% 0, 50% 60%);
+  border-bottom: 1px solid var(--gold);
+}
+
+.envelope::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: #eee2c9;
+  clip-path: polygon(0 100%, 50% 48%, 100% 100%);
+}
+
+.envelope-content {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.envelope-title {
+  font-size: 25px;
+  font-style: italic;
+}
+
+.seal {
+  display: grid;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: #9b7440;
+  color: white;
+  border: 3px double #e4cf9f;
+  font-size: 22px;
+}
+
+.hint { color: #817866; font-size: 14px; }
+
+.music-button {
+  position: fixed;
+  z-index: 5;
+  right: 12px;
+  bottom: 12px;
+  border-radius: 30px;
+  padding: 10px 15px;
+  background: #fffdf8;
+  color: var(--dark-gold);
+  box-shadow: 0 3px 15px #0001;
+}
+
+.hidden { display: none !important; }
+</style>
+</head>
+
+<body>
+
+<!-- КОНВЕРТ -->
+<div class="envelope-screen" id="envelopeScreen">
+  <div class="envelope-wrap">
+    <p class="eyebrow">Сизди чакырабыз</p>
+
+    <button class="envelope" id="openButton">
+      <span class="envelope-content">
+        <span class="envelope-title">Тойго чакыруу</span>
+        <span class="seal">♡</span>
+        <span class="eyebrow">Баястан & Айгул</span>
+      </span>
+    </button>
+
+    <p class="hint">Чакыруу катын ачуу үчүн конвертти басыңыз</p>
+  </div>
+</div>
+
+<!-- МУЗЫКА ФАЙЛЫ -->
+<audio id="music" loop preload="auto">
+  <source src="assets/music.mp3" type="audio/mpeg">
+</audio>
+
+<button class="music-button hidden" id="musicButton">
+  ♫ Музыканы токтотуу
+</button>
+
+<main>
+  <article class="frame">
+
+    <p class="eyebrow">Тойго чакыруу</p>
+    <div class="divider">♡</div>
+
+    <h1>
+      Баястан
+      <span class="amp">&</span>
+      Айгул
+    </h1>
+
+    <p>
+      Өмүрүбүздүн эң бактылуу күнүндө
+      кубанычыбызды тең бөлүшүп,
+      ак тилегиңиздер менен бизди
+      колдоп коюуңуздарды каалайбыз.
+    </p>
+
+    <!-- Сүрөттү assets/wedding-photo.jpg деген ат менен жүктө -->
+    <img
+      src="assets/wedding-photo.jpg"
+      alt="Баястан жана Айгул"
+      class="photo hidden"
+      id="couplePhoto"
+    >
+
+    <div id="photoMessage">
+      🤍 Жубайлардын сүрөтү бул жерге жайгашат.
+      Сүрөттү assets/wedding-photo.jpg деген ат менен кошуңуз.
+    </div>
+
+    <div class="divider">♡</div>
+
+    <p class="eyebrow">Той күнү</p>
+    <h2 class="date">04.11.2026</h2>
+    <p>Шаршемби күнү · Саат 17:00</p>
+
+    <div class="countdown">
+      <div><strong id="days">00</strong><span>күн</span></div>
+      <div><strong id="hours">00</strong><span>саат</span></div>
+      <div><strong id="minutes">00</strong><span>мүнөт</span></div>
+      <div><strong id="seconds">00</strong><span>секунд</span></div>
+    </div>
+
+    <div class="divider">♡</div>
+
+    <p class="eyebrow">Той өтүүчү жай</p>
+    <h2>«Ак Бата Гранд» рестораны</h2>
+    <p>Гүлчө шаары</p>
+
+    <a
+      class="map-link"
+      href="https://www.google.com/maps/search/?api=1&query=Ак+Бата+Гранд+ресторан+Гүлчө"
+      target="_blank"
+      rel="noopener"
+    >
+      📍 Картадан көрүү
+    </a>
+
+    <div class="divider">♡</div>
+
+    <p class="eyebrow">Той ээлери</p>
+    <h2>Айбек & Гүлмира</h2>
+
+    <p>
+      Урматтуу туугандар, достор жана жакындар!
+      Сиздерди тойго келип, конок болуп,
+      ак батаңызды берип кетүүгө чакырабыз.
+    </p>
+
+    <h2>Сиздерди күтөбүз!</h2>
+
+    <div class="divider">♡</div>
+
+    <footer>
+      Сүйүү жана ак тилек менен 🤍
+    </footer>
+
+  </article>
+</main>
+
+<script>
+const envelopeScreen = document.getElementById("envelopeScreen");
+const openButton = document.getElementById("openButton");
+const music = document.getElementById("music");
+const musicButton = document.getElementById("musicButton");
+
+// Конверт басылганда ачылат жана музыка ойнойт.
+openButton.addEventListener("click", async () => {
+  envelopeScreen.classList.add("open");
+  musicButton.classList.remove("hidden");
+
+  try {
+    await music.play();
+    musicButton.textContent = "♫ Музыканы токтотуу";
+  } catch (error) {
+    musicButton.textContent = "♫ Музыканы ойнотуу";
+  }
+});
+
+// Музыканы токтотуу жана кайра ойнотуу.
+musicButton.addEventListener("click", async () => {
+  if (music.paused) {
+    try {
+      await music.play();
+      musicButton.textContent = "♫ Музыканы токтотуу";
+    } catch (error) {
+      musicButton.textContent = "♫ Кайра ойнотуу";
+    }
+  } else {
+    music.pause();
+    musicButton.textContent = "♫ Музыканы ойнотуу";
+  }
+});
+
+// Сүрөт жүктөлсө көрсөтүлөт.
+const photo = document.getElementById("couplePhoto");
+const photoMessage = document.getElementById("photoMessage");
+
+photo.addEventListener("load", () => {
+  photo.classList.remove("hidden");
+  photoMessage.classList.add("hidden");
+});
+
+photo.addEventListener("error", () => {
+  photo.classList.add("hidden");
+  photoMessage.classList.remove("hidden");
+});
+
+// Тойго чейин калган убакыт.
+const weddingDate = new Date(
+  "2026-11-04T17:00:00+06:00"
+).getTime();
+
+function updateCountdown() {
+  const now = Date.now();
+  const difference = weddingDate - now;
+
+  if (difference <= 0) {
+    document.getElementById("days").textContent = "00";
+    document.getElementById("hours").textContent = "00";
+    document.getElementById("minutes").textContent = "00";
+    document.getElementById("seconds").textContent = "00";
+    return;
+  }
+
+  document.getElementById("days").textContent =
+    Math.floor(difference / 86400000);
+
+  document.getElementById("hours").textContent =
+    Math.floor((difference / 3600000) % 24);
+
+  document.getElementById("minutes").textContent =
+    Math.floor((difference / 60000) % 60);
+
+  document.getElementById("seconds").textContent =
+    Math.floor((difference / 1000) % 60);
+}
+
+updateCountdown();
+setInterval(updateCountdown, 1000);
+</script>
+
+</body>
+</html>
